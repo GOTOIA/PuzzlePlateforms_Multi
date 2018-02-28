@@ -9,6 +9,9 @@
 /**
  * 
  */
+
+class UUserWidget;
+
 UCLASS()
 class PUZZLEPLATFORMS_API UPuzzlePlatformsGameInstance : public UGameInstance
 {
@@ -19,10 +22,16 @@ public:
 
 	virtual void Init();
 
-	UFUNCTION(Exec)
+	UFUNCTION(BlueprintCallable)//call by blueprint
+		void LoadMenu();
+	
+	UFUNCTION(Exec)//call by console
 	void Host();
 
 	UFUNCTION(Exec)
 	void Join(const FString& Address);
+
+private :
+	TSubclassOf<UUserWidget> MenuClass;
 	
 };
