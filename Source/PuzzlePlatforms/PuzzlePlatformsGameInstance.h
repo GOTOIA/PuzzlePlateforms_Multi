@@ -12,6 +12,7 @@
  */
 
 class UUserWidget;
+class UMainMenu;
 
 UCLASS()
 class PUZZLEPLATFORMS_API UPuzzlePlatformsGameInstance : public UGameInstance,public IMenuInterface
@@ -34,5 +35,8 @@ public:
 
 private :
 	TSubclassOf<UUserWidget> MenuClass;
+
+	UMainMenu* Menu;
+
 	
 };
