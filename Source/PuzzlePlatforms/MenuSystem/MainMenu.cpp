@@ -2,6 +2,11 @@
 
 #include "MainMenu.h"
 
+#include "Components/Button.h"
+#include "Components/WidgetSwitcher.h"
+#include "Components/EditableTextBox.h"
+
+
 
 
 bool UMainMenu::Initialize(){
@@ -19,7 +24,16 @@ bool UMainMenu::Initialize(){
 
 	if (!ensure(cmdJoin != nullptr)) return false;
 		
-	cmdJoin->OnClicked.AddDynamic(this, &UMainMenu::joinServer);
+	cmdJoin->OnClicked.AddDynamic(this, &UMainMenu::OpenJoinMenu);
+
+	if (!ensure(cmdCancelJoinMenuButton != nullptr)) return false;
+
+	cmdCancelJoinMenuButton->OnClicked.AddDynamic(this, &UMainMenu::OpenMainMenu);
+
+	if (!ensure(cmdConfirmJoinMenuButton != nullptr)) return false;
+
+	cmdConfirmJoinMenuButton->OnClicked.AddDynamic(this, &UMainMenu::joinServer);
+
 
     return true;
 
@@ -78,9 +92,33 @@ void UMainMenu::hostServer(){
 
 }
 
+void UMainMenu::OpenJoinMenu()
+{
+	if (!ensure(MenuSwitcher != nullptr)) return;
+	if (!ensure(JoinMenu != nullptr)) return;
+	MenuSwitcher->SetActiveWidget(JoinMenu);
+}
+
+
+void UMainMenu::OpenMainMenu()
+{
+	if (!ensure(MenuSwitcher != nullptr)) return;
+	if (!ensure(JoinMenu != nullptr)) return;
+	MenuSwitcher->SetActiveWidget(MainMenu);
+}
+
+
 
 void UMainMenu::joinServer(){
 
-	UE_LOG(LogTemp, Warning, TEXT("I m gonna join a server!!"));
+	//UE_LOG(LogTemp, Warning, TEXT("I m gonna join a server!!"));
+
+	if (MenuInterface != nullptr)
+	{
+		if (!ensure(txtIpadressField != nullptr)) return;
+		const FString &Address = txtIpadressField->GetText().ToString();
+		MenuInterface->Join(Address);
+	}
+
 }
 
