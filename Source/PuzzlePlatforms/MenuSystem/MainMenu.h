@@ -3,8 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "MenuInterface.h"
-#include "Blueprint/UserWidget.h"
+#include "MenuWidget.h"
 #include "MainMenu.generated.h"
 
 /**
@@ -18,7 +17,7 @@ class UEditableTextBox;
 
 
 UCLASS()
-class PUZZLEPLATFORMS_API UMainMenu : public UUserWidget
+class PUZZLEPLATFORMS_API UMainMenu : public UMenuWidget
 {
 	GENERATED_BODY()
 
@@ -35,6 +34,9 @@ private:
 		
 		UPROPERTY(meta = (BindWidget))
 		UButton* cmdConfirmJoinMenuButton;
+
+		UPROPERTY(meta = (BindWidget))
+		UButton* cmdQuitGame;
 
 		UPROPERTY(meta = (BindWidget))
 		UWidgetSwitcher* MenuSwitcher;
@@ -61,19 +63,21 @@ private:
 		UFUNCTION()
 		void OpenMainMenu();
 
-		IMenuInterface *MenuInterface;
+		UFUNCTION()
+		void QuitPressed();
+
+		
 
 
 protected :
 		virtual bool Initialize();
 
 
-public :
 
-	    void SetMenuInterface(IMenuInterface* MenuInterface);
 
-		void Setup();
-		void Teardown();
+	    
+
+	
 
 	
 };

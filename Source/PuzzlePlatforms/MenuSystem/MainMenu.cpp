@@ -34,51 +34,17 @@ bool UMainMenu::Initialize(){
 
 	cmdConfirmJoinMenuButton->OnClicked.AddDynamic(this, &UMainMenu::joinServer);
 
+	if (!ensure(cmdQuitGame != nullptr)) return false;
+
+	cmdQuitGame->OnClicked.AddDynamic(this, &UMainMenu::QuitPressed);
+
 
     return true;
 
 	
 }
 
-void UMainMenu::SetMenuInterface(IMenuInterface* MenuInterface)
-{
-    this->MenuInterface = MenuInterface;
-}
 
-void UMainMenu::Setup()
-{
-	this->AddToViewport();
-
-	UWorld* World = GetWorld();
-	if (!ensure(World != nullptr)) return;
-
-	APlayerController* PlayerController = World->GetFirstPlayerController();
-	if (!ensure(PlayerController != nullptr)) return;
-
-	FInputModeUIOnly InputModeData;
-	InputModeData.SetWidgetToFocus(this->TakeWidget());
-	InputModeData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
-
-	PlayerController->SetInputMode(InputModeData);
-
-	PlayerController->bShowMouseCursor = true;
-}
-
-void UMainMenu::Teardown()
-{
-	this->RemoveFromViewport();
-
-	UWorld* World = GetWorld();
-	if (!ensure(World != nullptr)) return;
-
-	APlayerController* PlayerController = World->GetFirstPlayerController();
-	if (!ensure(PlayerController != nullptr)) return;
-
-	FInputModeGameOnly InputModeData;
-	PlayerController->SetInputMode(InputModeData);
-
-	PlayerController->bShowMouseCursor = false;
-}
 
 
 void UMainMenu::hostServer(){
@@ -119,6 +85,22 @@ void UMainMenu::joinServer(){
 		const FString &Address = txtIpadressField->GetText().ToString();
 		MenuInterface->Join(Address);
 	}
+
+}
+
+
+void UMainMenu::QuitPressed(){
+
+	//UE_LOG(LogTemp, Warning, TEXT("I quit game!!"));
+
+    UWorld* World = GetWorld();
+    if (!ensure(World != nullptr)) return;
+
+    APlayerController* PlayerController = World->GetFirstPlayerController();
+    if (!ensure(PlayerController != nullptr)) return;
+
+    PlayerController->ConsoleCommand("quit");
+
 
 }
 
